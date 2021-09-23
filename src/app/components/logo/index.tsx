@@ -4,6 +4,10 @@ import tw from 'twin.macro';
 
 import LogoImg from '../../../assets/images/logo.png';
 
+interface ILogoProps {
+  color?: 'white' | 'dark';
+}
+
 const LogoContainer = styled.div`
   ${tw`
     flex
@@ -17,7 +21,8 @@ const LogoText = styled.div`
     font-bold
     text-black
     m-1
-    `}
+    `};
+  ${({ color }: any) => (color === 'white' ? tw`text-white` : tw`text-black`)}
 `;
 const Image = styled.div`
   width: auto;
@@ -28,13 +33,15 @@ const Image = styled.div`
     height: 100%;
   }
 `;
-export function Logo() {
+export function Logo(props: ILogoProps) {
+  const { color } = props;
+
   return (
     <LogoContainer>
       <Image>
         <img src={LogoImg} />
       </Image>
-      <LogoText>up2date</LogoText>
+      <LogoText color={color || 'dark'}>up2date</LogoText>
     </LogoContainer>
   );
 }
