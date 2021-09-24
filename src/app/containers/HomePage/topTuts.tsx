@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import { ITutorial } from '../../../typings/tutorial';
@@ -7,6 +7,7 @@ import Carousel, { Dots, slidesToShowPlugin } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import { useMediaQuery } from 'react-responsive';
 import { SCREENS } from '../../components/responsive';
+import tutorialService from '../../services/tutorialService';
 
 const TopTutsContainer = styled.div`
   ${tw`
@@ -49,6 +50,14 @@ export function TopTuts() {
 
   const isMobile = useMediaQuery({ maxWidth: SCREENS.sm });
 
+  const fetchTopTutorials = async () => {
+    const tutorials = await tutorialService.getTutorials().catch((err) => {
+      console.log('error', err);
+    });
+
+    console.log('tutorials:', tutorials);
+  };
+
   const testTutorial1: ITutorial = {
     name: 'Full MERN Website from Zero to Deployment',
     thumbnailSrc:
@@ -65,6 +74,10 @@ export function TopTuts() {
     lastUpdated: 'Last Updated: 23/09/21',
     uploadDate: 'Date Uploaded: 16/09/21',
   };
+
+  useEffect(() => {
+    fetchTopTutorials();
+  }, []);
 
   const tutorials = [
     <Tutorial {...testTutorial1} />,
