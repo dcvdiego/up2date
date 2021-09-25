@@ -26,6 +26,9 @@
     "react-redux": "^7.2.0",
     "react-responsive": "^9.0.0-beta.4",
     "react-scripts": "4.0.3",
+    "react-spinners": "^0.11.0",
+    "redux-logger": "^3.0.6",
+    "reselect": "^4.0.0",
     "styled-components": "^5.3.1",
     "twin.macro": "^2.7.0",
     "typescript": "~4.1.5"
@@ -37,7 +40,6 @@
     "eject": "react-scripts eject",
     "schema:download": "npx apollo service:download --endpoint=http://localhost:9000/graphql ./src/app/graphql-schema.json",
     "schema:generate-watch": "npx apollo codegen:generate --localSchemaFile=./src/app/graphql-schema.json --target=typescript --tagName=gql --watch"
-
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -55,6 +57,7 @@
     ]
   },
   "devDependencies": {
+    "@types/redux-logger": "^3.0.9",
     "@types/styled-components": "^5.1.14",
     "autoprefixer": "^9",
     "postcss": "^7",

@@ -7,7 +7,7 @@ import { Navbar } from '../../components/navbar';
 import { DevSteps } from './devSteps';
 import { StudentSteps } from './studentSteps';
 import { TopSection } from './topSection';
-import { TopTuts } from './topTuts';
+import { TopTutorials } from './topTutorials';
 
 const PageContainer = styled.div`
   ${tw`
@@ -30,7 +30,7 @@ export function HomePage() {
       <Marginer direction="vertical" margin="8em" />
       <DevSteps />
       <Marginer direction="vertical" margin="8em" />
-      <TopTuts />
+      <TopTutorials />
       <Footer />
     </PageContainer>
   );

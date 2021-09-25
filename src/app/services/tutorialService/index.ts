@@ -10,8 +10,8 @@ class TutorialService {
         throw err;
       });
 
-    if (response && response.data)
-      return response.data as GetTutorials_tutorials[];
+    if (response && response.data && response.data.tutorials)
+      return response.data.tutorials as GetTutorials_tutorials[];
 
     return [];
   }
