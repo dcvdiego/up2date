@@ -13,5 +13,5 @@ yarn install
 #### Then
 
 ```
-docker-compose up
+docker-compose build && docker-compose up
 ```
