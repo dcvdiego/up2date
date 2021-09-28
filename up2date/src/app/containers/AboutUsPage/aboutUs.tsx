@@ -78,7 +78,7 @@ export default function AboutUs() {
   return (
     <AboutUsContainer>
       <MeContainer>
-        <img src={YaBoiImg} />
+        <img src={YaBoiImg} alt="Creator profile pic" />
       </MeContainer>
       <InfoContainer>
         <Title>About Us</Title>

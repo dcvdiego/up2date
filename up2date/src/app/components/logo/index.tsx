@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 
@@ -37,11 +38,13 @@ export function Logo(props: ILogoProps) {
   const { color } = props;
 
   return (
-    <LogoContainer>
-      <Image>
-        <img src={LogoImg} />
-      </Image>
-      <LogoText color={color || 'dark'}>up2date</LogoText>
-    </LogoContainer>
+    <Link to="/">
+      <LogoContainer>
+        <Image>
+          <img src={LogoImg} alt="up2date" />
+        </Image>
+        <LogoText color={color || 'dark'}>up2date</LogoText>
+      </LogoContainer>
+    </Link>
   );
 }

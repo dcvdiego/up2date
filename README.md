@@ -2,7 +2,7 @@
 
 ## Simple website to update tutorials so that they always work!
 
-Uses **React**, **TypeScript**, **GraphQL**, **TypeORM**, **MySQL**, **Node.js**, **Express.js**, and **Docker**!
+Uses **React**, **TypeScript**, **GraphQL**, **TypeORM**, **MySQL**, **Node.js**, **Express.js** (**NestJs**), and **Docker**!
 
 ### To initialize
 

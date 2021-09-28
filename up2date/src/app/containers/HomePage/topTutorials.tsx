@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import { ITutorial } from '../../../typings/tutorial';
 import { Tutorial } from '../../components/tutorial';
 import Carousel, { Dots, slidesToShowPlugin } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
@@ -99,30 +98,13 @@ export function TopTutorials() {
       console.log('error', err);
     });
 
-    console.log('tutorials:', tutorials);
     if (tutorials) setTopTutorials(tutorials);
     setLoading(false);
   };
 
-  const testTutorial1: ITutorial = {
-    name: 'Full MERN Website from Zero to Deployment',
-    thumbnailSrc:
-      'https://i.ytimg.com/an_webp/4ELH8CT4J0A/mqdefault_6s.webp?du=3000&sqp=CIDasYoG&rs=AOn4CLAVZHqFNtR9fi0SbnFaSeCY-wy-kg',
-    language: 'React, NodeJS, GraphQL, Tailwind, Docker',
-    lastUpdated: 'Last Updated: 23/09/21',
-    uploadDate: 'Date Uploaded: 01/06/21',
-  };
-  const testTutorial2: ITutorial = {
-    name: 'How to use a .env file',
-    thumbnailSrc:
-      'https://i.ytimg.com/vi/qTU7w3bWrOk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCGL1feC2Hljnq54hNB1kNsn2YFQQ',
-    language: 'VS Code',
-    lastUpdated: 'Last Updated: 23/09/21',
-    uploadDate: 'Date Uploaded: 16/09/21',
-  };
-
   useEffect(() => {
     fetchTopTutorials();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isEmptyTopTutorials = !topTutorials || topTutorials.length === 0;

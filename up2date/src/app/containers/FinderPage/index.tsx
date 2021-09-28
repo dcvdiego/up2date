@@ -4,7 +4,7 @@ import tw from 'twin.macro';
 import { Footer } from '../../components/footer';
 import { Marginer } from '../../components/marginer';
 import { Navbar } from '../../components/navbar';
-import AboutUs from './aboutUs';
+import { SearchBar } from '../../components/searchbar';
 
 const PageContainer = styled.div`
   ${tw`
@@ -17,11 +17,24 @@ const PageContainer = styled.div`
     `};
 `;
 
-export function AboutUsPage() {
+const Title = styled.h1`
+  ${tw`
+    text-black
+    text-2xl
+    md:text-5xl
+    font-extrabold
+    md:font-black
+    md:leading-normal
+    `};
+`;
+
+export function FinderPage() {
   return (
     <PageContainer>
       <Navbar />
-      <AboutUs />
+      <Title>Find the tutorial you need:</Title>
+      <Marginer direction="vertical" margin="4em" />
+      <SearchBar />
       <Marginer direction="vertical" margin="4em" />
       <Footer />
     </PageContainer>

@@ -121,7 +121,7 @@ export function Tutorial(props: ITutorialProps) {
   return (
     <TutorialContainer>
       <TutorialThumbnail>
-        <img src={thumbnailSrc} />
+        <img src={thumbnailSrc} alt="thumbnail for tutorial" />
       </TutorialThumbnail>
       <TutorialName>{name}</TutorialName>
       <LanguageContainer>

@@ -6,6 +6,7 @@ import ScreenShotImg from '../../../assets/images/ScreenShot.png';
 import BlobImg from '../../../assets/images/blob.svg';
 import { SCREENS } from '../../components/responsive';
 import Button from '../../components/button';
+import { Link } from 'react-router-dom';
 
 const TopSectionContainer = styled.div`
   min-height: 400px;
@@ -101,9 +102,9 @@ const BlobContainer = styled.div`
   @media (min-width: ${SCREENS.xl}) {
     width: 70em;
     max-height: 30em;
-    right: -15em;
+    right: -10em;
     top: -25em;
-    transform: rotate(-20deg);
+    transform: rotate(-30deg);
   }
 `;
 
@@ -116,7 +117,7 @@ const StandaloneScreenshot = styled.div`
 
   img {
     width: auto;
-    height: 100%;
+    height: 98%;
     max-width: fit-content;
   }
 
@@ -158,16 +159,18 @@ export function TopSection() {
           left writing outdated code and not knowing what went wrong!
         </Description>
         <ButtonsContainer>
-          <Button text="Find a Tutorial" />
+          <Link to="find">
+            <Button text="Find a Tutorial" />
+          </Link>
           <Button theme="filled" text="Add a Tutorial" />
         </ButtonsContainer>
       </LeftContainer>
       <RightContainer>
         <BlobContainer>
-          <img src={BlobImg} />
+          <img src={BlobImg} alt="blob background for screenshot" />
         </BlobContainer>
         <StandaloneScreenshot>
-          <img src={ScreenShotImg} />
+          <img src={ScreenShotImg} alt="screenshot of a tutorial" />
         </StandaloneScreenshot>
       </RightContainer>
     </TopSectionContainer>

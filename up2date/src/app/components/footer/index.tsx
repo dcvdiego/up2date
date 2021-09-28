@@ -1,6 +1,7 @@
 import { faEnvelope, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import { Logo } from '../logo';
@@ -164,16 +165,16 @@ export function Footer() {
           <LinksList>
             <HeaderTitle>Get Started</HeaderTitle>
             <ListItem>
-              <a href="#">Home</a>
+              <Link to="/">Home</Link>
             </ListItem>
             <ListItem>
-              <a href="#">Tutorials</a>
+              <Link to="#">Tutorials</Link>
             </ListItem>
             <ListItem>
-              <a href="#">Sign Up</a>
+              <Link to="#">Sign Up</Link>
             </ListItem>
             <ListItem>
-              <a href="#">Log In</a>
+              <Link to="#">Log In</Link>
             </ListItem>
           </LinksList>
         </SectionContainer>
@@ -181,16 +182,16 @@ export function Footer() {
           <LinksList>
             <HeaderTitle>More Links</HeaderTitle>
             <ListItem>
-              <a href="#">About Us</a>
+              <Link to="/about">About Us</Link>
             </ListItem>
             <ListItem>
-              <a href="#">FAQ</a>
+              <Link to="#">FAQ</Link>
             </ListItem>
             <ListItem>
-              <a href="#">Privacy Policy</a>
+              <Link to="#">Privacy Policy</Link>
             </ListItem>
             <ListItem>
-              <a href="#">Terms and Conditions</a>
+              <Link to="#">Terms and Conditions</Link>
             </ListItem>
           </LinksList>
         </SectionContainer>
