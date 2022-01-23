@@ -9,7 +9,9 @@ import tw from 'twin.macro';
 import { ITutorial } from '../../../typings/tutorial';
 import Button from '../button';
 
-interface ITutorialProps extends ITutorial {}
+interface ITutorialProps extends ITutorial {
+  snippet?: any;
+}
 
 const TutorialContainer = styled.div`
   width: 16.5em;
@@ -80,6 +82,7 @@ const TutorialDetailsContainer = styled.div`
     flex
     w-full
     justify-between
+    truncate
     `};
 `;
 
@@ -116,33 +119,67 @@ mt-5
 `;
 
 export function Tutorial(props: ITutorialProps) {
-  const { name, thumbnailSrc, language, uploadDate, lastUpdated } = props;
+  if (props.source === 'Youtube') {
+    const snippet = props.snippet;
+    console.log(snippet);
 
-  return (
-    <TutorialContainer>
-      <TutorialThumbnail>
-        <img src={thumbnailSrc} alt="thumbnail for tutorial" />
-      </TutorialThumbnail>
-      <TutorialName>{name}</TutorialName>
-      <LanguageContainer>
-        <Language>{language}</Language>
-      </LanguageContainer>
-      <Separator />
-      <TutorialDetailsContainer>
-        <TutorialDetail>
-          <SmallIcon>
-            <FontAwesomeIcon icon={faCalendarPlus} />
-          </SmallIcon>
-          <TutorialInfo>{lastUpdated}</TutorialInfo>
-        </TutorialDetail>
-        <TutorialDetail>
-          <SmallIcon>
-            <FontAwesomeIcon icon={faCalendarCheck} />
-          </SmallIcon>
-          <TutorialInfo>{uploadDate}</TutorialInfo>
-        </TutorialDetail>
-      </TutorialDetailsContainer>
-      <AccessButton text="Access tutorial" />
-    </TutorialContainer>
-  );
+    const { title, publishTime, thumbnails, description } = snippet;
+
+    return (
+      <TutorialContainer>
+        <TutorialThumbnail>
+          <img src={thumbnails.medium.url} alt="thumbnail for tutorial" />
+        </TutorialThumbnail>
+        <TutorialName>{title}</TutorialName>
+        <LanguageContainer>
+          <Language>N/A</Language>
+        </LanguageContainer>
+        <Separator />
+        <TutorialDetailsContainer>
+          <TutorialDetail>
+            <SmallIcon>
+              <FontAwesomeIcon icon={faCalendarPlus} />
+            </SmallIcon>
+            <TutorialInfo>{description}...</TutorialInfo>
+          </TutorialDetail>
+          <TutorialDetail>
+            <SmallIcon>
+              <FontAwesomeIcon icon={faCalendarCheck} />
+            </SmallIcon>
+            <TutorialInfo>{publishTime}</TutorialInfo>
+          </TutorialDetail>
+        </TutorialDetailsContainer>
+        <AccessButton text="Access tutorial" />
+      </TutorialContainer>
+    );
+  } else if (props.source === 'Local') {
+    const { name, thumbnailSrc, language, uploadDate, lastUpdated } = props;
+    return (
+      <TutorialContainer>
+        <TutorialThumbnail>
+          <img src={thumbnailSrc} alt="thumbnail for tutorial" />
+        </TutorialThumbnail>
+        <TutorialName>{name}</TutorialName>
+        <LanguageContainer>
+          <Language>{language}</Language>
+        </LanguageContainer>
+        <Separator />
+        <TutorialDetailsContainer>
+          <TutorialDetail>
+            <SmallIcon>
+              <FontAwesomeIcon icon={faCalendarPlus} />
+            </SmallIcon>
+            <TutorialInfo>{lastUpdated}</TutorialInfo>
+          </TutorialDetail>
+          <TutorialDetail>
+            <SmallIcon>
+              <FontAwesomeIcon icon={faCalendarCheck} />
+            </SmallIcon>
+            <TutorialInfo>{uploadDate}</TutorialInfo>
+          </TutorialDetail>
+        </TutorialDetailsContainer>
+        <AccessButton text="Access tutorial" />
+      </TutorialContainer>
+    );
+  } else return null;
 }

@@ -16,6 +16,7 @@ import tutorialService from '../../services/tutorialService';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectTutorials } from '../../containers/FinderPage/selectors';
 import { Tutorial } from '../tutorial';
+import youtubeAPI from '../../api/youtube';
 
 const SearchBarContainer = styled(motion.div)`
   display: flex;
@@ -195,21 +196,41 @@ export const SearchBar: FC<SearchBarProps> = ({ source }): JSX.Element => {
 
     setLoading(true);
     setNoTutorials(false);
-    const tutorials = await tutorialService.getTutorials().catch((err) => {
-      console.log('error', err);
-      setNetworkError(true);
-    });
-    if (tutorials) {
-      const searchedTutorials = tutorials.filter(
-        (tutorial) =>
-          tutorial.language.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          tutorial.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+    if (source === 'Local') {
+      const tutorials = await tutorialService.getTutorials().catch((err) => {
+        console.log('error', err);
+        setNetworkError(true);
+      });
+      if (tutorials) {
+        const searchedTutorials = tutorials.filter(
+          (tutorial) =>
+            tutorial.language
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+            tutorial.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
 
-      if (searchedTutorials.length === 0) {
-        setNoTutorials(true);
+        if (searchedTutorials.length === 0) {
+          setNoTutorials(true);
+        }
+        setTutorials(searchedTutorials);
       }
-      setTutorials(searchedTutorials);
+    } else if (source === 'Youtube') {
+      const response = await youtubeAPI
+        .get('/search', {
+          params: {
+            q: searchQuery,
+          },
+        })
+        .catch((err) => {
+          console.log('error', err);
+          setNetworkError(true);
+        });
+      if (response) {
+        const tutorials = response.data.items;
+        if (tutorials.length === 0) setNoTutorials(true);
+        setTutorials(tutorials);
+      }
     }
     setLoading(false);
   };
@@ -218,7 +239,11 @@ export const SearchBar: FC<SearchBarProps> = ({ source }): JSX.Element => {
   const tutorialsResult =
     (!isEmptyTutorials &&
       tutorials.map((tutorial) => (
-        <Tutorial {...tutorial} thumbnailSrc={tutorial.thumbnailSrc} />
+        <Tutorial
+          {...tutorial}
+          thumbnailSrc={tutorial.thumbnailSrc}
+          source={source}
+        />
       ))) ||
     [];
 

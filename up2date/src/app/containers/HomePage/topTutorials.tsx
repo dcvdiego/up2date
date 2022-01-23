@@ -112,7 +112,11 @@ export function TopTutorials() {
   const tutorials =
     (!isEmptyTopTutorials &&
       topTutorials.map((tutorial) => (
-        <Tutorial {...tutorial} thumbnailSrc={tutorial.thumbnailSrc} />
+        <Tutorial
+          {...tutorial}
+          thumbnailSrc={tutorial.thumbnailSrc}
+          source="Local"
+        />
       ))) ||
     [];
 
