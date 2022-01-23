@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IFindPageState } from '../../containers/FinderPage/type';
+import { IFindPageState } from './type';
 
 const initialState: IFindPageState = {
   tutorials: [],

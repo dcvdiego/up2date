@@ -1,6 +1,6 @@
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, FC } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,15 +10,17 @@ import { useDebounce } from '../../hooks/debounceHook';
 import { Dispatch } from 'redux';
 
 import { GetTutorials_tutorials } from '../../services/tutorialService/__generated__/GetTutorials';
-import { setTutorials } from './slice';
+import { setTutorials } from '../../containers/FinderPage/slice';
 import { createSelector } from 'reselect';
 import tutorialService from '../../services/tutorialService';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectTutorials } from '../../containers/FinderPage/selectors';
+import { Tutorial } from '../tutorial';
+
 const SearchBarContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
-  width: 34em;
+  width: 30em;
   height: 3.8em;
   background-color: white;
   border-radius: 6px;
@@ -97,11 +99,13 @@ const LineSeparator = styled.div`
 
 const SearchContent = styled.div`
   padding: 1em;
+  overflow-y: auto;
   ${tw`
   flex
   flex-col
   w-full
   h-full
+  items-center
   `};
 `;
 
@@ -117,12 +121,23 @@ const LoadingWrapper = styled.div`
 
 const containerVariants = {
   expanded: {
-    height: '30em',
+    height: '32em',
   },
   collapsed: {
     height: '3.8em',
   },
 };
+
+const EmptyTutorials = styled.div`
+  ${tw`
+  w-full
+    flex
+    justify-center
+    items-center
+    text-sm
+    text-gray-500
+  `}
+`;
 
 const containerTransition = { type: 'spring', damping: 22, stiffness: 150 };
 
@@ -135,18 +150,25 @@ const stateSelector = createSelector(makeSelectTutorials, (tutorials) => ({
   tutorials,
 }));
 
-export function SearchBar() {
+interface SearchBarProps {
+  source: String;
+}
+export const SearchBar: FC<SearchBarProps> = ({ source }): JSX.Element => {
   const [isExpanded, setExpanded] = useState(false);
   const [parentRef, isClickedOutside] = useClickOutside();
   const inputRef: any = useRef();
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setLoading] = useState(false);
+  const [noTutorials, setNoTutorials] = useState(false);
 
   const { tutorials } = useSelector(stateSelector);
   const { setTutorials } = actionDispatch(useDispatch());
 
+  const [networkError, setNetworkError] = useState(false);
   const changeHandler = (e: any) => {
     e.preventDefault();
+
+    if (e.target.value.trim() === '') setNoTutorials(false);
     setSearchQuery(e.target.value);
   };
 
@@ -158,6 +180,9 @@ export function SearchBar() {
     setExpanded(false);
     setSearchQuery('');
     setLoading(false);
+    setNoTutorials(false);
+    setNetworkError(false);
+    setTutorials([]);
     if (inputRef.current) inputRef.current.value = '';
   };
 
@@ -165,21 +190,37 @@ export function SearchBar() {
     if (isClickedOutside) collapseContainer();
   }, [isClickedOutside]);
 
-  // const prepareSearchQuery = (query) => {
-  // const url = some url {query}
-  // return encodeURI(url)
-  // }
   const searchTutorial = async () => {
-    if (!searchQuery /* || searchQuery.trim === '' */) return;
+    if (!searchQuery || searchQuery.trim() === '') return;
+
     setLoading(true);
+    setNoTutorials(false);
     const tutorials = await tutorialService.getTutorials().catch((err) => {
       console.log('error', err);
+      setNetworkError(true);
     });
+    if (tutorials) {
+      const searchedTutorials = tutorials.filter(
+        (tutorial) =>
+          tutorial.language.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          tutorial.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
-    if (tutorials) setTutorials(tutorials);
-    console.log(tutorials);
+      if (searchedTutorials.length === 0) {
+        setNoTutorials(true);
+      }
+      setTutorials(searchedTutorials);
+    }
     setLoading(false);
   };
+  const isEmptyTutorials = !tutorials || tutorials.length === 0;
+
+  const tutorialsResult =
+    (!isEmptyTutorials &&
+      tutorials.map((tutorial) => (
+        <Tutorial {...tutorial} thumbnailSrc={tutorial.thumbnailSrc} />
+      ))) ||
+    [];
 
   useDebounce(searchQuery, 500, searchTutorial);
 
@@ -216,14 +257,30 @@ export function SearchBar() {
           )}
         </AnimatePresence>
       </SearchInputContainer>
-      <LineSeparator />
-      <SearchContent>
-        {isLoading && (
-          <LoadingWrapper>
-            <MoonLoader loading size={20} />
-          </LoadingWrapper>
-        )}
-      </SearchContent>
+      {isExpanded && <LineSeparator />}
+      {isExpanded && (
+        <SearchContent>
+          {isLoading && (
+            <LoadingWrapper>
+              <MoonLoader loading size={20} />
+            </LoadingWrapper>
+          )}
+          {isEmptyTutorials && !isLoading && !noTutorials && !networkError && (
+            <EmptyTutorials>
+              Start typing to search for tutorials
+            </EmptyTutorials>
+          )}
+          {!isLoading && noTutorials && (
+            <EmptyTutorials>No tutorials found! Add one?</EmptyTutorials>
+          )}
+          {!isLoading && networkError && (
+            <EmptyTutorials> Error</EmptyTutorials>
+          )}
+          {!isEmptyTutorials &&
+            !isLoading &&
+            tutorialsResult.map((tutorial) => <>{tutorial}</>)}
+        </SearchContent>
+      )}
     </SearchBarContainer>
   );
-}
+};

@@ -34,7 +34,11 @@ export function FinderPage() {
       <Navbar />
       <Title>Find the tutorial you need:</Title>
       <Marginer direction="vertical" margin="4em" />
-      <SearchBar />
+      <h3>Local Search</h3>
+      <SearchBar source="Local" />
+      <Marginer direction="vertical" margin="4em" />
+      <h3>Youtube Search</h3>
+      <SearchBar source="Youtube" />
       <Marginer direction="vertical" margin="4em" />
       <Footer />
     </PageContainer>
